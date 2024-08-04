@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -13,9 +13,11 @@ const firebaseConfig = {
   storageBucket: "pantry-tracker-1b81c.appspot.com",
   messagingSenderId: "469349140874",
   appId: "1:469349140874:web:fbd5e2207a851f8673e073",
-  measurementId: "G-5TWRTXF2CJ"
+  measurementId: "G-5TWRTXF2CJ",
+  databaseURL: ""
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
+export { firestore };

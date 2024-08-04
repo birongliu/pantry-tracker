@@ -7,13 +7,13 @@
 
 </path>
     </defs>
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
         <mask id="mask-2" fill="white">
             <use xlink:href="#path-1">
 
 </use>
         </mask>
-        <use fill="white" fill-rule="nonzero" xlink:href="#path-1">
+        <use fill="white" fillRule="nonzero" xlink:href="#path-1">
 
 </use>
     </g>

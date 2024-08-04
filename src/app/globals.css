@@ -8,18 +8,40 @@
   box-sizing: border-box;
 }
 
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0; 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 :root:has(.no-doc-scroll) {
-  overflow:hidden;
+  overflow: hidden;
 }
 :root:has(.doc-scroll) {
-  overflow:auto;
+  overflow: auto;
+}
+
+/* Custom Scrollbar Styles for .custom-scrollbar className */
+.custom-scrollbar {
+  overflow: auto;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #2d3748; /* Darker background for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #4a5568; /* Darker color for the thumb */
+  border-radius: 20px;
+  border: 3px solid #2d3748; /* Matches the track background */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #718096; /* Lighter color on hover */
 }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, useSession } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,14 +17,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { userId } = auth();
   return (
-    <ClerkProvider> 
-    <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <Header isSignedIn={userId !== null} />
+          {children}
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
