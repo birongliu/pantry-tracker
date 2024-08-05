@@ -1,32 +1,20 @@
 "use client";
 import SideBar from "@/app/components/SideBar";
 import React, { useEffect, useState } from "react";
-
 import {
   addDoc,
   collection,
   deleteDoc,
   doc,
   getDoc,
-  getDocs,
-  query,
   setDoc,
-  Timestamp,
 } from "firebase/firestore";
 import { firestore } from "../../lib/firebase/firebase";
 import Form from "@/app/components/Form";
 import { InventoryItem } from "@/app/lib/interface";
-import { getRecord } from "@/app/lib/functions";
-
-
-const defaultCreateFormValue: InventoryItem = {
-  name: "",
-  quantity: 1,
-  expiredAt: new Date(),
-  category: "",
-  createdAt: new Date(),
-  id: "",
-};
+import { createInventoryItem, getInventoryRecord, getInventoryRecords } from "@/app/lib/functions";
+import { defaultCreateFormValue } from "@/app/lib/constants";
+import { uuidv4 } from "@firebase/util";
 
 export default function Page() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -37,13 +25,7 @@ export default function Page() {
   }, []);
 
   const updateInventory = async () => {
-    const snapshot = query(collection(firestore, "inventory"));
-    const docs = await getDocs(snapshot);
-    if (docs.size === 0) {
-      setInventory([]);
-      return;
-    }
-    setInventory(getRecord(docs))
+    setInventory(await getInventoryRecords())
   };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,9 +46,9 @@ export default function Page() {
   };
 
   const addItem = async (form: InventoryItem) => {
-    const snapshot = collection(firestore, "inventory");
-    await addDoc(snapshot, form);
-
+    form.id = uuidv4()
+    let snapshot = await getInventoryRecord(form.id)
+    if(!snapshot) snapshot = await createInventoryItem(form)
     updateInventory();
   };
 
@@ -76,13 +58,11 @@ export default function Page() {
     setEdit(true);
     handleShowForm();
   };
+  
   const handleEditItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    const docRef = doc(collection(firestore, "inventory"), form.id);
-    const docsSnap = await getDoc(docRef);
-    if (docsSnap.exists()) {
-      await setDoc(docRef, form);
-    }
+    const docsSnap = await getInventoryRecord(form.id)
+    if (docsSnap) await setDoc(docsSnap.ref, form);
     setShowForm((prev) => !prev);
     setForm(defaultCreateFormValue);
     updateInventory();
@@ -91,16 +71,14 @@ export default function Page() {
   const handleDeleteItem = async (index: number) => {
     const item = inventory[index];
     setSearch(item.name);
-    const docRef = doc(collection(firestore, "inventory"), item.id);
-    const docsSnap = await getDoc(docRef);
-    if (docsSnap.exists()) {
-      const { quantity, ...data } = docsSnap.data();
-      if (quantity === 1) await deleteDoc(docRef);
-      else
-        await setDoc(docRef, {
-          quantity: quantity - 1,
-          ...data,
-        });
+    const docs = await getInventoryRecord(item.id)
+    if(docs) {
+      const { quantity, ref, ...data } = docs;
+      if (quantity === 1) {
+        await deleteDoc(ref);
+      } else {
+        await setDoc(ref, { ...data, quantity: quantity - 1, })
+      }
     }
     updateInventory();
   };

@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^5.2.12",
     "@types/tailwindcss": "^3.1.0",
     "firebase": "^10.12.5",
+    "framer-motion": "^11.3.21",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
