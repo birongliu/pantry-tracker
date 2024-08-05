@@ -53,7 +53,7 @@ export async function openRouter(input: string): Promise<AIResponse> {
           },
           {
             role: "user",
-            content: `Provide valid JSON output. As a culinary expert, you are given an order in JSON format ${input} making dishes. if there no data is empty string. come up with whatever dishes you want. The output JSON format should be like: ${JSON.stringify(example_schema)} Please remove all other information. only return JSON structure"`,
+            content: `Provide valid JSON output. As a culinary expert, you are given an order in JSON format ${input} making dishes. if there data is empty. come up with whatever dishes you want. The output JSON format should be like: ${JSON.stringify(example_schema)} Please remove all other information. only return JSON structure"`,
           },
         ],
       }),
