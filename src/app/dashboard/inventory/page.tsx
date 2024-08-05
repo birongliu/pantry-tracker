@@ -49,6 +49,7 @@ export default function Page() {
     form.id = uuidv4()
     let snapshot = await getInventoryRecord(form.id)
     if(!snapshot) snapshot = await createInventoryItem(form)
+      
     updateInventory();
   };
 
