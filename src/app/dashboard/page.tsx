@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
 import { collection, getDocs, query, Timestamp } from "firebase/firestore";
 import { firestore } from "../lib/firebase/firebase";
-import { InventoryItem } from "./inventory/page";
+import { InventoryItem } from "@/app/lib/interface";
 
 interface ItemStatsData {
   total: number;
