@@ -1,18 +1,14 @@
 "use client";
 import SideBar from "@/app/components/SideBar";
 import React, { useEffect, useState } from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
-import { firestore } from "../../lib/firebase/firebase";
+import { deleteDoc, setDoc } from "firebase/firestore";
 import Form from "@/app/components/Form";
 import { InventoryItem } from "@/app/lib/interface";
-import { createInventoryItem, getInventoryRecord, getInventoryRecords } from "@/app/lib/functions";
+import {
+  createInventoryItem,
+  getInventoryRecord,
+  getInventoryRecords,
+} from "@/app/lib/functions";
 import { defaultCreateFormValue } from "@/app/lib/constants";
 import { uuidv4 } from "@firebase/util";
 
@@ -25,9 +21,9 @@ export default function Page() {
   }, []);
 
   const updateInventory = async () => {
-    setInventory(await getInventoryRecords())
+    setInventory(await getInventoryRecords());
   };
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({
@@ -46,10 +42,10 @@ export default function Page() {
   };
 
   const addItem = async (form: InventoryItem) => {
-    form.id = uuidv4()
-    let snapshot = await getInventoryRecord(form.id)
-    if(!snapshot) snapshot = await createInventoryItem(form)
-      
+    form.id = uuidv4();
+    let snapshot = await getInventoryRecord(form.id);
+    if (!snapshot) snapshot = await createInventoryItem(form);
+
     updateInventory();
   };
 
@@ -59,10 +55,10 @@ export default function Page() {
     setEdit(true);
     handleShowForm();
   };
-  
+
   const handleEditItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    const docsSnap = await getInventoryRecord(form.id)
+    const docsSnap = await getInventoryRecord(form.id);
     if (docsSnap) await setDoc(docsSnap.ref, form);
     setShowForm((prev) => !prev);
     setForm(defaultCreateFormValue);
@@ -72,13 +68,13 @@ export default function Page() {
   const handleDeleteItem = async (index: number) => {
     const item = inventory[index];
     setSearch(item.name);
-    const docs = await getInventoryRecord(item.id)
-    if(docs) {
+    const docs = await getInventoryRecord(item.id);
+    if (docs) {
       const { quantity, ref, ...data } = docs;
       if (quantity === 1) {
         await deleteDoc(ref);
       } else {
-        await setDoc(ref, { ...data, quantity: quantity - 1, })
+        await setDoc(ref, { ...data, quantity: quantity - 1 });
       }
     }
     updateInventory();
