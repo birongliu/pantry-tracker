@@ -1,5 +1,3 @@
-import { OpenAIData } from "../interface";
-
 const example_schema = {
   recipes: [
     {
